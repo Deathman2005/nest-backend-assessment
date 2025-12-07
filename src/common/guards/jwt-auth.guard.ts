@@ -1,0 +1,24 @@
+// import { Injectable } from '@nestjs/common';
+// import { AuthGuard } from '@nestjs/passport';
+
+// @Injectable()
+// export class JwtAuthGuard extends AuthGuard('jwt') {}
+
+// src/common/guards/jwt-auth.guard.ts
+import {
+  Injectable,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
+@Injectable()
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  // optional: give friendlier error message
+  handleRequest(err: any, user: any, info: any, context: ExecutionContext) {
+    if (err || !user) {
+      throw err || new UnauthorizedException('Invalid or expired token');
+    }
+    return user;
+  }
+}
